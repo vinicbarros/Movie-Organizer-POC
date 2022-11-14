@@ -7,4 +7,8 @@ const movieSchema = Joi.object({
   status_Id: Joi.number().valid(1, 2, 3).required(),
 });
 
-export default movieSchema;
+const typeSchema = Joi.object({
+  type: Joi.string().required(),
+});
+
+export { movieSchema, typeSchema };

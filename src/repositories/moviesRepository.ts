@@ -1,6 +1,11 @@
 import { QueryResult } from "pg";
 import db from "../database/database.js";
-import { Movie, MovieEntity, MoviesPlatformEntity } from "../protocols";
+import {
+  Movie,
+  MovieEntity,
+  MoviesPlatformEntity,
+  StatusEntity,
+} from "../protocols";
 
 async function insert(movie: Movie) {
   return await db.query(
@@ -78,6 +83,14 @@ async function getPlatform(): Promise<QueryResult<MoviesPlatformEntity>> {
   GROUP BY platform.name`);
 }
 
+async function checkType(type: string): Promise<QueryResult<StatusEntity>> {
+  return await db.query(`SELECT * FROM status WHERE type = $1;`, [type]);
+}
+
+async function insertStatus(type: string) {
+  return await db.query(`INSERT INTO status (type) VALUES ($1);`, [type]);
+}
+
 export {
   insert,
   get,
@@ -90,4 +103,6 @@ export {
   updateBoth,
   checkName,
   getPlatform,
+  checkType,
+  insertStatus,
 };

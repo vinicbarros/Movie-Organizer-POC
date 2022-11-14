@@ -26,3 +26,24 @@ export type MoviePlatformEntity = {
   gender: string;
   rating: string | null;
 };
+
+export type GenderEntity = {
+  id: number;
+  name: string;
+};
+
+export type Gender = Omit<GenderEntity, "id">;
+
+export type PlatformEntity = {
+  id: number;
+  name: string;
+};
+
+export type Platform = Omit<PlatformEntity, "id">;
+
+export type StatusEntity = {
+  id: number;
+  type: string;
+};
+
+export type Status = Omit<StatusEntity, "id">;

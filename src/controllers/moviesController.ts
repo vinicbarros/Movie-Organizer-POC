@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
-import { Movie, MovieUpdate } from "../protocols";
+import { Movie, MovieUpdate, Status } from "../protocols";
 import {
   checkGender,
   checkName,
   checkPlatform,
+  checkType,
   deleteMovieById,
   get,
   getPlatform,
   insert,
+  insertStatus,
   updateBoth,
   updateRating,
   updateStatusId,
@@ -100,10 +102,28 @@ async function getMoviesPlatform(req: Request, res: Response) {
   }
 }
 
+async function createStatus(req: Request, res: Response) {
+  const body = res.locals.body as Status;
+
+  try {
+    const statusExist = (await checkType(body.type)).rowCount > 0;
+
+    if (statusExist) {
+      return res.status(400).send({ message: "This status already exist." });
+    }
+
+    await insertStatus(body.type);
+    return res.status(201).send({ message: "Status created." });
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
+}
+
 export {
   insertNewMovie,
   getMovies,
   deleteMovies,
   updateMovies,
   getMoviesPlatform,
+  createStatus,
 };
